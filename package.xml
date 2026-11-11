@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ros_package_template</name>
+  <name>hero_chassis_controller</name>
   <version>0.1.0</version>
-  <description>A template for ROS packages.</description>
-  <maintainer email="liaoqiayuan@gmail.com">Qiayuan Liao</maintainer>
-  <license>BSD</license>
-  <author email="liaoqiayuan@gmail.com">Qiayuan Liao</author>
+  <description>ROS controller package for the Hero mecanum-wheel chassis.</description>
+  <maintainer email="linxhs7ar444@gmail.com">s7ar4</maintainer>
+  <license>BSD-3-Clause</license>
+  <author email="linxhs7ar444@gmail.com">s7ar4</author>
 
   <!-- buildtool_depend: dependencies of the build process -->
   <buildtool_depend>catkin</buildtool_depend>
@@ -15,6 +15,7 @@
   <depend>eigen</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
+  <depend>std_srvs</depend>
 
   <build_depend>roslint</build_depend>
 </package>
