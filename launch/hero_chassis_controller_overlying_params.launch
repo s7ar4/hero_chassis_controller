@@ -18,7 +18,7 @@
   <arg name="overlying_param_file" default="$(arg default_param_file)"/>
 
   <!-- Launch ROS Package Template node. -->
-  <node pkg="ros_package_template" type="ros_package_template" name="ros_package_template" output="screen">
+  <node pkg="hero_chassis_controller" type="hero_chassis_controller" name="hero_chassis_controller" output="screen">
     <rosparam command="load" file="$(arg default_param_file)"/>
     <!-- Overlay parameters if user specified them. They must be loaded after default parameters! -->
     <rosparam command="load" file="$(arg overlying_param_file)"/>
