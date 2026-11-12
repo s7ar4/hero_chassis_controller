@@ -1,0 +1,19 @@
+controller:
+  hero_chassis_controller:
+    type: hero_chassis_controller/HeroChassisController
+    joints:
+      - left_front_wheel_joint
+      - right_front_wheel_joint
+      - left_back_wheel_joint
+      - right_back_wheel_joint
+    target_wheel_speeds: [0.2, 0.2, 0.2, 0.2]
+    max_effort: 3.0
+    gains:
+      left_front_wheel_joint:  {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
+      right_front_wheel_joint: {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
+      left_back_wheel_joint:   {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
+      right_back_wheel_joint:  {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
+
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50

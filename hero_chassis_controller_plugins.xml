@@ -1,0 +1,9 @@
+<library path="lib/libhero_chassis_controller_controller">
+    <class name="hero_chassis_controller/HeroChassisController"
+           type="hero_chassis_controller::HeroChassisController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+            Four-wheel mecanum chassis wheel-speed PID controller using an effort interface.
+        </description>
+    </class>
+</library>

@@ -16,6 +16,11 @@ find_package(catkin REQUIRED
     sensor_msgs
     roslint
     std_srvs
+    controller_interface
+    hardware_interface
+    pluginlib
+    control_toolbox
+    realtime_tools
     )
 
 ## Find system libraries
@@ -38,10 +43,16 @@ catkin_package(
     ${EIGEN3_INCLUDE_DIR}
     LIBRARIES
     ${PROJECT_NAME}_core
+    ${PROJECT_NAME}_controller
     CATKIN_DEPENDS
     roscpp
     sensor_msgs
     std_srvs
+    controller_interface
+    hardware_interface
+    pluginlib
+    control_toolbox
+    realtime_tools
     DEPENDS
     ## find_package(Eigen3) provides a non standard EIGEN3_INCLUDE_DIR instead of Eigen3_INCLUDE_DIRS.
     ## Therefore, the DEPEND does not work as expected and we need to add the directory to the INCLUDE_DIRS
@@ -70,7 +81,21 @@ include_directories(
 add_library(${PROJECT_NAME}_core
     src/Algorithm.cpp
     )
+add_library(${PROJECT_NAME}_controller
+        src/HeroChassisController.cpp
+        include/hero_chassis_controller/HeroChassisController.hpp
+)
+
+add_dependencies(${PROJECT_NAME}_controller
+        ${catkin_EXPORTED_TARGETS}
+)
+
+target_link_libraries(${PROJECT_NAME}_controller
+        ${catkin_LIBRARIES}
+)
+
 target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+target_compile_features(${PROJECT_NAME}_controller PRIVATE cxx_std_14)
 
 ## Declare cpp executables
 add_executable(${PROJECT_NAME}
@@ -103,7 +128,7 @@ target_link_libraries(${PROJECT_NAME}
 
 # Mark executables and/or libraries for installation
 install(
-    TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_core
+    TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_core ${PROJECT_NAME}_controller
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -114,6 +139,11 @@ install(
     DIRECTORY include/ros_package_template/
     DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
     FILES_MATCHING PATTERN "*.hpp"
+)
+install(
+        DIRECTORY include/hero_chassis_controller/
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+        FILES_MATCHING PATTERN "*.hpp"
 )
 
 # Mark other files for installation
@@ -138,5 +168,10 @@ endif ()
 ##########################
 ## Static code analysis ##
 ##########################
+
+install(
+        FILES hero_chassis_controller_plugins.xml
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 roslint_cpp()
