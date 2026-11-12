@@ -1,18 +1,41 @@
 controller:
   hero_chassis_controller:
     type: hero_chassis_controller/HeroChassisController
+    # 轮子顺序固定：左前、右前、左后、右后
     joints:
       - left_front_wheel_joint
       - right_front_wheel_joint
       - left_back_wheel_joint
       - right_back_wheel_joint
+
+    # ---- 底盘几何（来自 hero.urdf.xacro，单位 m）----
+    wheel_radius: 0.07625
+    half_wheelbase: 0.2      # 前/后轮到 base_link 的 x 距离
+    half_track: 0.2          # 左/右轮到 base_link 的 y 距离
+
+    # ---- 限幅与安全 ----
+    max_effort: 8.0              # 每个轮子的力矩上限 N*m
+    max_wheel_speed: 20.0        # 轮子角速度上限 rad/s
+    max_wheel_acceleration: 5.0  # 轮子角加速度上限 rad/s^2，<=0 表示关闭
+    cmd_vel_timeout: 0.5         # 超过 0.5 s 没有 /cmd_vel 就停车
+
+    # ---- 速度指令坐标系 ----
+    # chassis: /cmd_vel 在底盘坐标系下（默认）
+    # world  : /cmd_vel 在世界坐标系下，控制器用 tf 旋转到底盘坐标系
+    velocity_mode: chassis
+    world_frame: odom
+    odom_frame: odom
+    base_frame: base_link
+
+    # 没有收到 /cmd_vel 时保持的测试转速，用来单独演示 PID 跟踪
     target_wheel_speeds: [0.2, 0.2, 0.2, 0.2]
-    max_effort: 3.0
+
+    # 每个轮子一套 PID，rqt_reconfigure 可在线改
     gains:
-      left_front_wheel_joint:  {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
-      right_front_wheel_joint: {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
-      left_back_wheel_joint:   {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
-      right_back_wheel_joint:  {p: 8.0, i: 2.0, d: 0.0, i_clamp: 0.5}
+      left_front_wheel_joint:  {p: 8.0, i: 2.0, d: 0.0, i_clamp_max: 0.5, i_clamp_min: -0.5, antiwindup: true}
+      right_front_wheel_joint: {p: 8.0, i: 2.0, d: 0.0, i_clamp_max: 0.5, i_clamp_min: -0.5, antiwindup: true}
+      left_back_wheel_joint:   {p: 8.0, i: 2.0, d: 0.0, i_clamp_max: 0.5, i_clamp_min: -0.5, antiwindup: true}
+      right_back_wheel_joint:  {p: 8.0, i: 2.0, d: 0.0, i_clamp_max: 0.5, i_clamp_min: -0.5, antiwindup: true}
 
   joint_state_controller:
     type: joint_state_controller/JointStateController

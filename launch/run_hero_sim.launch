@@ -1,0 +1,21 @@
+<launch>
+  <!-- 一条命令起整套仿真：Gazebo + hero 模型 + ros_control + 我们的底盘控制器 -->
+
+  <!-- 1) Gazebo + 机器人模型：load_chassis=true 才会加载麦轮底盘 -->
+  <!--    roller_type:=realistic 用 16 个真实小辊子，横移、自转才符合物理 -->
+  <include file="$(find rm_description_for_task)/launch/hero.launch">
+    <arg name="load_chassis" value="true"/>
+    <arg name="roller_type" value="realistic"/>
+    <arg name="paused" value="false"/>
+  </include>
+
+  <!-- 2) 把 controllers.yaml 加载到参数服务器：YAML 顶层是 controller:， -->
+  <!--    所以控制器参数会落在 /controller/hero_chassis_controller/ 下 -->
+  <rosparam file="$(find hero_chassis_controller)/config/controllers.yaml" command="load"/>
+
+  <!-- 3) 用 spawner 加载并启动控制器；spawner 会自动等 controller_manager 就绪 -->
+  <!--    args 里的名字必须和 YAML 里的层级对应 -->
+  <node name="hero_controller_spawner" pkg="controller_manager" type="spawner"
+        respawn="false" output="screen"
+        args="controller/hero_chassis_controller controller/joint_state_controller"/>
+</launch>

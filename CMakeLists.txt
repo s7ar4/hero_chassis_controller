@@ -16,6 +16,11 @@ find_package(catkin REQUIRED
     sensor_msgs
     roslint
     std_srvs
+    std_msgs
+    geometry_msgs
+    nav_msgs
+    tf
+    dynamic_reconfigure
     controller_interface
     hardware_interface
     pluginlib
@@ -48,6 +53,11 @@ catkin_package(
     roscpp
     sensor_msgs
     std_srvs
+    std_msgs
+    geometry_msgs
+    nav_msgs
+    tf
+    dynamic_reconfigure
     controller_interface
     hardware_interface
     pluginlib

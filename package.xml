@@ -16,6 +16,11 @@
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
   <depend>std_srvs</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <depend>dynamic_reconfigure</depend>
   <depend>controller_interface</depend>
   <depend>hardware_interface</depend>
   <depend>pluginlib</depend>
